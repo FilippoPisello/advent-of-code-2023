@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from advent_of_code import read_txt_input
+
 
 def main():
     text = read_txt_input(1)
@@ -43,19 +45,6 @@ def run(text: list[str]) -> str:
         total += number
 
     return str(total)
-
-
-ROOT = Path(__file__).parent.parent.resolve()
-
-
-def read_txt_input(day_number: int) -> list[str]:
-    """Reads the input file for the given day number.
-
-    Each line is an element of the returned list.
-    """
-    input_file = ROOT / "input.txt"
-    content = input_file.read_text()
-    return content.splitlines()
 
 
 if __name__ == "__main__":

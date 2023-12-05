@@ -1,6 +1,6 @@
 import pytest
 
-from day1.filippo.solution import run
+from advent_of_code.day1.filippo.solution import run
 
 
 def test_if_string_has_two_digits_then_take_first_and_last():
