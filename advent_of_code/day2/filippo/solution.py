@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Self
 
 
-def main(problem_input: list[str]):
+def main_part_one(problem_input: list[str]):
     total = 0
     for line in problem_input:
         game = Game.from_line(line)
@@ -11,6 +11,14 @@ def main(problem_input: list[str]):
             total += game.id
     return total
 
+
+
+def main_part_two(problem_input: list[str]):
+    total = 0
+    for line in problem_input:
+        game = Game.from_line(line)
+        total += game.cubes
+    return total
 
 @dataclass
 class Game:
@@ -33,3 +41,7 @@ class Game:
 
     def is_possible(self, blue: int, red: int, green: int) -> bool:
         return (self.blue <= blue) and (self.red <= red) and (self.green <= green)
+
+    @property
+    def cubes(self) -> int:
+        return self.blue * self.red * self.green

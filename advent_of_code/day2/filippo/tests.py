@@ -1,4 +1,5 @@
-from advent_of_code.day2.filippo.solution import Game, main
+from advent_of_code.day2.filippo.solution import (Game, main_part_one,
+                                                  main_part_two)
 
 
 def test_one_game_is_parsed_to_the_storer_object():
@@ -47,4 +48,14 @@ def test_example_part_one():
         "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red",
         "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green",
     ]
-    assert main(example) == 8
+    assert main_part_one(example) == 8
+
+def test_example_part_two():
+    example = [
+        "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
+        "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
+        "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red",
+        "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red",
+        "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green",
+    ]
+    assert main_part_two(example) == 2286
