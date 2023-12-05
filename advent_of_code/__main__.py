@@ -12,7 +12,8 @@ def main():
     if args.test:
         run_tests(args.day, args.user)
     else:
-        run_solution(args.day, args.user)
+        function_to_call = _derive_function_name(args.part)
+        run_solution(args.day, args.user, function_to_call)
 
 
 def _parse_args():
@@ -28,14 +29,28 @@ def _parse_args():
         help="Run tests instead of the solution.",
         default=False,
     )
+    parser.add_argument(
+        "--part",
+        type=int,
+        help="Run only one part of the solution.",
+        choices=[1, 2],
+        default=None,
+    )
     return parser.parse_args()
 
+def _derive_function_name(part: int | None) -> str:
+    if part is None:
+        return "main"
+    digitstr = {1: "one", 2: "two"}
+    return f"main_part_{digitstr[part]}"
 
-def run_solution(day: int, user: str):
+def run_solution(day: int, user: str, function: str):
     problem_input = read_txt_input(day, user)
     user_dir = ".".join(["advent_of_code", f"day{day}", user])
-    solution = import_module(user_dir + ".solution")
-    result = solution.main(problem_input)
+    solution_module = import_module(user_dir + ".solution")
+    solution_function = getattr(solution_module, function)
+    print(f"Running '{function}' for '{user}', day '{day}'...")
+    result = solution_function(problem_input)
     print(result)
 
 
