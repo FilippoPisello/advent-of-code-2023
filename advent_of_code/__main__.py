@@ -32,7 +32,7 @@ def _parse_args():
 
 
 def run_solution(day: int, user: str):
-    problem_input = read_txt_input(day)
+    problem_input = read_txt_input(day, user)
     user_dir = ".".join(["advent_of_code", f"day{day}", user])
     solution = import_module(user_dir + ".solution")
     result = solution.main(problem_input)
