@@ -1,40 +1,53 @@
 # Advent of Code 2023
+
 Hosting the solutions for Advent of Code 2023 for some members of Picnic Technologies France.
 
-
 ## How to use
-You should have made the following:
+
+### Folder structure
+
+The setup should be the following:
+
 - A folder in `advent_of_code/` named `day<number>`, unless already existing.
 - A folder in `advent_of_code/day<number>/` named `<your-name>`.
-- Three files:
+- Four files:
   - `advent_of_code/day<number>/<your-name>/__init__.py`
   - `advent_of_code/day<number>/<your-name>/solution.py`
+  - `advent_of_code/day<number>/<your-name>/input.txt`
   - [Optional] `advent_of_code/day<number>/<your-name>/tests.py`
 
-If the above is respected, you can **run your solution using the command**:
+### File structure
+
+File `advent_of_code/day<number>/<your-name>/solution.py` should contain either:
+
+- A function called `main`: if you opt for a setup where you use one function for both parts.
+- At least one function between `main_part_one` and `main_part_two`: if you want to have distinct functions for the two parts, so that you can run each independently.
+
+Anyway, all of these functions must respect the following:
+
+- Takes a single argument `problem_input`, which is a `list[str]` where each element corresponds to a line of the original problem input.
+- Return whatever the result of your solution is.
+
+### Running your solution
+
+By setting up as described, you can run your solutions as described below. The script will take care of feeding the input for the right day to your solution and print its result.
+
+In case you opted for a single `main` function, use:
+
 ```bash
 python -m advent_of_code <day-number> <your_name>
 ```
-For example, *John* can run its solution for day 1 using:
+
+Otherwise, to run a part specific main, use:
+
 ```bash
-python -m advent_of_code 1 john
+python -m advent_of_code <day-number> <your_name> --part <1 or 2>
 ```
-You can also run your tests by simply adding `--test` to the above command:
+
+### Running tests
+
+You can also run your tests by using the keyword `--test`:
+
 ```bash
 python -m advent_of_code <day-number> <your_name> --test
-```
-
-## How your solution should look like
-The script will take care of feeding the input for the right day to your solution and print its result.
-
-For this to work, the following needs to be respected:
-- Your solution is in `advent_of_code/day<number>/<your-name>/solution.py`.
-- It contains a function `main`
-  - The function takes a single argument `problem_input`, which is a `list[str]` where each element corresponds to a line of the original problem input.
-  - The function returns whatever the result of your solution is.
-
-Example below:
-```python
-def main(problem_input: list[str]):
-    return len(problem_input)
 ```
