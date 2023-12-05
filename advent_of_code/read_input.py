@@ -8,6 +8,6 @@ def read_txt_input(day_number: int) -> list[str]:
 
     Each line is an element of the returned list.
     """
-    input_file = ROOT / f"day{day_number}" / "input.txt"
+    input_file = ROOT / f"input_files/day{day_number}.txt"
     content = input_file.read_text()
     return content.splitlines()

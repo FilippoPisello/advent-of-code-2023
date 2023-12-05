@@ -4,15 +4,15 @@ from importlib import import_module
 import pytest
 
 from advent_of_code import MODULE_DIR
+from advent_of_code.read_input import read_txt_input
 
 
 def main():
     args = _parse_args()
-    user_dir = ".".join(["advent_of_code", f"day{args.day}", args.user])
     if args.test:
         run_tests(args.day, args.user)
     else:
-        run_solution(user_dir)
+        run_solution(args.day, args.user)
 
 
 def _parse_args():
@@ -31,9 +31,12 @@ def _parse_args():
     return parser.parse_args()
 
 
-def run_solution(user_dir: str):
+def run_solution(day: int, user: str):
+    problem_input = read_txt_input(day)
+    user_dir = ".".join(["advent_of_code", f"day{day}", user])
     solution = import_module(user_dir + ".solution")
-    solution.main()
+    result = solution.main(problem_input)
+    print(result)
 
 
 def run_tests(day: int, user: str):

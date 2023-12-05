@@ -1,14 +1,3 @@
-from pathlib import Path
-
-from advent_of_code import read_txt_input
-
-
-def main():
-    text = read_txt_input(1)
-    output = run(text)
-    print(output)
-
-
 mapping = {
     "one": 1,
     "two": 2,
@@ -22,9 +11,9 @@ mapping = {
 }
 
 
-def run(text: list[str]) -> str:
+def main(problem_input: list[str]):
     total = 0
-    for line in text:
+    for line in problem_input:
         matches = {}
 
         for spelled_out_digit, digit in mapping.items():
@@ -45,7 +34,3 @@ def run(text: list[str]) -> str:
         total += number
 
     return str(total)
-
-
-if __name__ == "__main__":
-    main()

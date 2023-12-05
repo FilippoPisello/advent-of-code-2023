@@ -23,3 +23,18 @@ You can also run your tests by simply adding `--test` to the above command:
 ```bash
 python -m advent_of_code <day-number> <your_name> --test
 ```
+
+## How your solution should look like
+The script will take care of feeding the input for the right day to your solution and print its result.
+
+For this to work, the following needs to be respected:
+- Your solution is in `advent_of_code/day<number>/<your-name>/solution.py`.
+- It contains a function `main`
+  - The function takes a single argument `problem_input`, which is a `list[str]` where each element corresponds to a line of the original problem input.
+  - The function returns whatever the result of your solution is.
+
+Example below:
+```python
+def main(problem_input: list[str]):
+    return len(problem_input)
+```
