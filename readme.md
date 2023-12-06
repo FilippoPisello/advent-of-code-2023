@@ -5,8 +5,12 @@ Hosting the solutions for Advent of Code 2023 for some members of Picnic Technol
 ## How to use
 
 ### Folder structure
+You can automatically create your starting files for a given day using the command:
+```bash
+python -m advent_of_code <day-number> <your_name> --create
+```
 
-The setup should be the following:
+It will create your files following the structure below:
 
 - A folder in `advent_of_code/` named `day<number>`, unless already existing.
 - A folder in `advent_of_code/day<number>/` named `<your-name>`.
@@ -27,6 +31,7 @@ Anyway, all of these functions must respect the following:
 
 - Takes a single argument `problem_input`, which is a `list[str]` where each element corresponds to a line of the original problem input.
 - Return whatever the result of your solution is.
+
 
 ### Running your solution
 
