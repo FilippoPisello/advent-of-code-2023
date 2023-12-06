@@ -8,6 +8,6 @@ def main_part_two(problem_input: list[str]):
     return
 
 
-def extract_number_from_line(line: str) -> int:
-   matches = re.match(r"\d+",line)
-   return int(matches[0])
+def extract_numbers_from_line(line: str) -> int:
+   matches = re.findall(r"\d+",line)
+   return [int(x) for x in matches]
