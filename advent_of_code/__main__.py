@@ -9,7 +9,9 @@ from advent_of_code.read_input import read_txt_input
 
 def main():
     args = _parse_args()
-    if args.test:
+    if args.create:
+        _create_day_user_dir(args.day, args.user)
+    elif args.test:
         run_tests(args.day, args.user)
     else:
         function_to_call = _derive_function_name(args.part)
@@ -36,13 +38,40 @@ def _parse_args():
         choices=[1, 2],
         default=None,
     )
+    parser.add_argument(
+        "--create",
+        action="store_true",
+        help="Create a new user directory.",
+        default=False,
+    )
     return parser.parse_args()
+
+
+def _create_day_user_dir(day: int, user: str):
+    user_dir = MODULE_DIR / f"day{day}" / user
+    user_dir.mkdir(parents=True, exist_ok=True)
+    (user_dir / "solution.py").touch()
+    (user_dir / "tests.py").touch()
+    (user_dir / "input.txt").touch()
+    file = open(user_dir / "solution.py", "w", encoding="utf-8")
+    file.write(
+        (
+            "def main_part_one(problem_input: list[str]):\n"
+            "    return\n"
+            "\n"
+            "def main_part_two(problem_input: list[str]):\n"
+            "    return\n"
+        )
+    )
+    file.close()
+
 
 def _derive_function_name(part: int | None) -> str:
     if part is None:
         return "main"
     digitstr = {1: "one", 2: "two"}
     return f"main_part_{digitstr[part]}"
+
 
 def run_solution(day: int, user: str, function: str):
     problem_input = read_txt_input(day, user)
