@@ -1,12 +1,12 @@
-import pandas as pd 
-import numpy as np
+def main(problem_input: list[str]):
+    total = 0
+    for line in problem_input:
+        calibration_values = []
+        for _, char in enumerate(line):
+            if char.isdigit():
+                calibration_values.append(char)
+        x = int(calibration_values[0] + calibration_values[
+            len(calibration_values)-1])
+        total = total + x
 
-f = open("day1_1\day1_1.txt", "r")
-print(f.read()[0])
-
-combinations = []
-for i in f.read():
-    if f.read()[i].isnumeric():
-        combinations.append(f.read()[i])
-
-print(combinations)
+    return total
