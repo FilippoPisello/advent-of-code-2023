@@ -1,8 +1,6 @@
-from advent_of_code.day3.filippo.solution import (
-    Number,
-    extract_numbers_from_line,
-    has_symbol,
-)
+from advent_of_code.day3.filippo.solution import (Number,
+                                                  extract_numbers_from_line,
+                                                  has_symbol, main_part_one)
 
 
 def test_if_single_number_in_row_then_it_is_extracted():
@@ -55,12 +53,12 @@ class TestNumberIsCenterOfTheRow:
 
 class TestNumberIsEndOfRow:
     def test_indexes_on_the_same_row_is_only_one_before_start(self):
-        number = Number(10, 139)
-        assert number.same_row_indexes == {138}
+        number = Number(10, 138)
+        assert number.same_row_indexes == {137}
 
     def test_index_on_adjacent_rows_are_same_and_one_before_start(self):
-        number = Number(10, 139)
-        assert number.adjacent_row_indexes == {138, 139, 140}
+        number = Number(10, 138)
+        assert number.adjacent_row_indexes == {137, 138, 139}
 
 
 class TestSymbolDetection:
@@ -71,3 +69,17 @@ class TestSymbolDetection:
     def test_if_index_matches_dot_then_false(self):
         line = "617*......"
         assert not has_symbol(line, {5})
+
+def test_example_part_one():
+    problem_input = [
+        "467..114..",
+        "...*......",
+        "..35..633.",
+        "......#...",
+        "617*......",
+        ".....+.58.",
+        "..592.....",
+        "......755.",
+        "...$.*....",
+        ".664.598.."]
+    assert main_part_one(problem_input) == 4361
