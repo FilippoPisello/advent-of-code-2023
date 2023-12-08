@@ -1,7 +1,8 @@
 import re
 import string
+from abc import ABC
 from dataclasses import dataclass
-from typing import ClassVar
+from typing import ClassVar, Self
 
 
 def main_part_one(problem_input: list[str]):
@@ -9,13 +10,40 @@ def main_part_one(problem_input: list[str]):
     for index, current_row in enumerate(problem_input):
         previous_row = _get_row(index - 1, problem_input)
         next_row = _get_row(index + 1, problem_input)
-        numbers = extract_numbers_from_line(current_row)
+        numbers = Number.from_line(current_row)
         for number in numbers:
-            if has_symbol(current_row, number.same_row_indexes) or has_symbol(
-                previous_row, number.adjacent_row_indexes
-            ) or has_symbol(next_row, number.adjacent_row_indexes):
-                total += number.value
+            if (
+                has_symbol(current_row, number.same_row_indexes)
+                or has_symbol(previous_row, number.adjacent_row_indexes)
+                or has_symbol(next_row, number.adjacent_row_indexes)
+            ):
+                total += number.int_value
     return total
+
+
+def main_part_two(problem_input: list[str]):
+    total = 0
+    for index, current_row in enumerate(problem_input):
+        previous_row = _get_row(index - 1, problem_input)
+        next_row = _get_row(index + 1, problem_input)
+        asterisks = Asterisk.from_line(current_row)
+
+        numbers_previous = Number.from_line(previous_row)
+        numbers_current = Number.from_line(current_row)
+        numbers_next = Number.from_line(next_row)
+        for asterisk in asterisks:
+            relevant_numbers = (
+                get_intersecting_numbers(
+                    asterisk.adjacent_row_indexes, numbers_previous
+                )
+                + get_intersecting_numbers(asterisk.same_row_indexes, numbers_current)
+                + get_intersecting_numbers(asterisk.adjacent_row_indexes, numbers_next)
+            )
+            if len(relevant_numbers) == 2:
+                first, second = relevant_numbers
+                total += first.int_value * second.int_value
+    return total
+
 
 def _get_row(index: int, problem_input: list[str]) -> str:
     try:
@@ -24,23 +52,20 @@ def _get_row(index: int, problem_input: list[str]) -> str:
         return "A" * 140
 
 
-def main_part_two(problem_input: list[str]):
-    return
-
-
 @dataclass
-class Number:
-    value: int
+class LineCharacter(ABC):
+    value: str
     starting_index: int
     ROW_LENGTH: ClassVar[int] = 140
+    REGEX_PATTERN: ClassVar[str] = NotImplementedError
 
     @property
-    def number_length(self) -> int:
+    def length(self) -> int:
         return len(str(self.value))
 
     @property
     def ending_index(self) -> int:
-        return self.starting_index + self.number_length - 1
+        return self.starting_index + self.length - 1
 
     @property
     def occupied_indexes(self) -> set[int]:
@@ -59,12 +84,29 @@ class Number:
     def adjacent_row_indexes(self) -> list[int]:
         return self.same_row_indexes | self.occupied_indexes
 
+    @classmethod
+    def from_line(cls, line: str) -> list[Self]:
+        expr = re.compile(cls.REGEX_PATTERN)
+        return [cls(match.group(), match.span()[0]) for match in expr.finditer(line)]
 
-def extract_numbers_from_line(line: str) -> int:
-    expr = re.compile(r"\d+")
-    return [
-        Number(int(match.group()), match.span()[0]) for match in expr.finditer(line)
-    ]
+
+@dataclass
+class Number(LineCharacter):
+    REGEX_PATTERN: ClassVar[str] = r"\d+"
+
+    @property
+    def int_value(self) -> int:
+        return int(self.value)
+
+
+@dataclass
+class Asterisk(LineCharacter):
+    REGEX_PATTERN: ClassVar[str] = r"\*"
+
+
+def extract_asterisks_from_line(line: str) -> list[Asterisk]:
+    expr = re.compile(r"\*")
+    return [Asterisk(match.group(), match.span()[0]) for match in expr.finditer(line)]
 
 
 def has_symbol(line: str, indexes: str) -> bool:
@@ -73,3 +115,7 @@ def has_symbol(line: str, indexes: str) -> bool:
         if line[index] in symbols:
             return True
     return False
+
+
+def get_intersecting_numbers(indexes: set[int], numbers: list[Number]) -> list[Number]:
+    return [x for x in numbers if x.occupied_indexes & indexes]
