@@ -20,6 +20,9 @@ It will create your files following the structure below:
   - `advent_of_code/day<number>/<your-name>/input.txt`
   - [Optional] `advent_of_code/day<number>/<your-name>/tests.py`
 
+> [!NOTE]
+> You are expected to copy-paste the content of your daily input into `input.txt`
+
 ### File structure
 
 File `advent_of_code/day<number>/<your-name>/solution.py` should contain either:
