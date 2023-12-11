@@ -1,10 +1,11 @@
+import re
 from dataclasses import dataclass
 from typing import Self
 
 
 def main_part_one(problem_input: list[str]):
     expanded_input = _calculate_expanded_input(problem_input)
-    galaxies = _parse_galaxies(expanded_input)
+    galaxies = parse_galaxies(expanded_input)
     return _sum_shortest_distances(galaxies)
 
 
@@ -22,7 +23,12 @@ def _calculate_expanded_input(problem_input: list[str]) -> list[str]:
 
 
 def _parse_galaxies(expanded_input: list[str]) -> list[Galaxy]:
-    return
+    galaxies = []
+    expr = re.compile(r"#")
+    for y, line in enumerate(expanded_input):
+        for match in expr.finditer(line):
+            galaxies.append(Galaxy(match.span()[0], y))
+    return galaxies
 
 
 def _sum_shortest_distances(galaxies: list[Galaxy]) -> int:
