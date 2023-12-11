@@ -1,8 +1,6 @@
 import re
 from dataclasses import dataclass
 from typing import Self
-import re
-import numpy
 
 
 def main_part_one(problem_input: list[str]):
@@ -22,21 +20,11 @@ class Galaxy:
 
 def _calculate_expanded_input(problem_input: list[str]) -> list[str]:
     new_universe = []
-    new_universe = expand_universe(problem_input)
-    new_universe = tranpose_universe(new_universe)
-    new_universe = expand_universe(new_universe)
-    return tranpose_universe(new_universe)
+    new_universe = expand_rows(problem_input)
+    return expand_columns(new_universe)
 
 
-def tranpose_universe(problem_input: list[str]) -> list[str]:
-    # transposed_universe = [
-    #     [row[i] for row in problem_input] for i in range(len(problem_input[0]))
-    # ]
-    transposed_universe = numpy.transpose(problem_input)
-    return transposed_universe
-
-
-def expand_universe(problem_input: list[str]) -> list[str]:
+def expand_rows(problem_input: list[str]) -> list[str]:
     expanded_universe = []
     for i in problem_input:
         if "#" in i:
@@ -46,6 +34,19 @@ def expand_universe(problem_input: list[str]) -> list[str]:
             expanded_universe.append(i)
 
     return expanded_universe
+
+
+def expand_columns(problem_input: list[str]) -> list[str]:
+    expanded_universe = [[] for _ in problem_input]
+    for i, _ in enumerate(problem_input[0]):
+        column = [row[i] for row in problem_input]
+        for index, row in enumerate(expanded_universe):
+            if "#" in column:
+                row.append(column[index])
+            else:
+                row.append(column[index])
+                row.append(column[index])
+    return ["".join(row) for row in expanded_universe]
 
 
 def _parse_galaxies(expanded_input: list[str]) -> list[Galaxy]:
