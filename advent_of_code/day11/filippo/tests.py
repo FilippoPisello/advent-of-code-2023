@@ -2,6 +2,8 @@ from advent_of_code.day11.filippo.solution import (
     Galaxy,
     _parse_galaxies,
     _sum_shortest_distances,
+    expand_universe,
+    _calculate_expanded_input,
 )
 
 
@@ -51,4 +53,42 @@ def test_parse_galaxies_with_example():
         Galaxy(9, 10),
         Galaxy(0, 11),
         Galaxy(5, 11),
+    ]
+
+
+def test_no_galaxy_in_row():
+    test_universe = ["........."]
+    new_unviverse = expand_universe(test_universe)
+
+    assert new_unviverse == [".........", "........."]
+
+
+def test_universe_expansion():
+    test_universe = [
+        "...#......",
+        ".......#..",
+        "#.........",
+        "..........",
+        "......#...",
+        ".#........",
+        ".........#",
+        "..........",
+        ".......#..",
+        "#...#.....",
+    ]
+
+    expanded_input = _calculate_expanded_input(test_universe)
+    assert expanded_input == [
+        "....#........",
+        ".........#...",
+        "#............",
+        ".............",
+        ".............",
+        "........#....",
+        ".#...........",
+        "............#",
+        ".............",
+        ".............",
+        ".........#...",
+        "#....#.......",
     ]
