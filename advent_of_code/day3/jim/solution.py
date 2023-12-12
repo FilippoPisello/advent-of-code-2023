@@ -8,6 +8,8 @@ def main(problem_input: list[str]):
     key_line = 1
     key_number = 0
     key_symbol = 0 
+    number_dict = {}
+    symbol_dict = {}
 
     # Create separate dictionairies for numbers and symbols
     for line in problem_input:
@@ -33,8 +35,6 @@ def main(problem_input: list[str]):
     
     # Part One
     total_part_numbers = []
-    number_dict = {}
-    symbol_dict = {}
     
     for _, number_info in number_dict.items():
         for _, symbol_info in symbol_dict.items():
