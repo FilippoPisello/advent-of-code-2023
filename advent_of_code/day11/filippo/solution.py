@@ -1,52 +1,55 @@
 import re
 from dataclasses import dataclass
-from typing import Self
+from typing import ClassVar, Self
 
 
 def main_part_one(problem_input: list[str]):
-    expanded_input = _calculate_expanded_input(problem_input)
-    galaxies = _parse_galaxies(expanded_input)
-    return _sum_shortest_distances(galaxies)
+    empty_rows = _find_empty_rows(problem_input)
+    empty_columns = _find_empty_columns(problem_input)
+    galaxies = _parse_galaxies(problem_input)
+    Galaxy.EXPANSION_COEFFICIENT = 2 - 1
+    return _sum_shortest_distances(galaxies, empty_rows, empty_columns)
+
+
+def main_part_two(problem_input: list[str]):
+    empty_rows = _find_empty_rows(problem_input)
+    empty_columns = _find_empty_columns(problem_input)
+    galaxies = _parse_galaxies(problem_input)
+    Galaxy.EXPANSION_COEFFICIENT = 1000000 - 1
+    return _sum_shortest_distances(galaxies, empty_rows, empty_columns)
 
 
 @dataclass
 class Galaxy:
     x: int
     y: int
+    EXPANSION_COEFFICIENT: ClassVar[int] = 0
 
-    def distance(self, other: Self) -> int:
-        return abs(self.x - other.x) + abs(self.y - other.y)
-
-
-def _calculate_expanded_input(problem_input: list[str]) -> list[str]:
-    new_universe = []
-    new_universe = expand_rows(problem_input)
-    return expand_columns(new_universe)
-
-
-def expand_rows(problem_input: list[str]) -> list[str]:
-    expanded_universe = []
-    for i in problem_input:
-        if "#" in i:
-            expanded_universe.append(i)
-        else:
-            expanded_universe.append(i)
-            expanded_universe.append(i)
-
-    return expanded_universe
+    def distance(
+        self, other: Self, empty_rows: set[str], empty_columns: set[str]
+    ) -> int:
+        x_dist = abs(self.x - other.x)
+        y_dist = abs(self.y - other.y)
+        for index in empty_rows:
+            if min(self.y, other.y) < index < max(self.y, other.y):
+                y_dist += self.EXPANSION_COEFFICIENT
+        for index in empty_columns:
+            if min(self.x, other.x) < index < max(self.x, other.x):
+                x_dist += self.EXPANSION_COEFFICIENT
+        return x_dist + y_dist
 
 
-def expand_columns(problem_input: list[str]) -> list[str]:
-    expanded_universe = [[] for _ in problem_input]
-    for i, _ in enumerate(problem_input[0]):
-        column = [row[i] for row in problem_input]
-        for index, row in enumerate(expanded_universe):
-            if "#" in column:
-                row.append(column[index])
-            else:
-                row.append(column[index])
-                row.append(column[index])
-    return ["".join(row) for row in expanded_universe]
+def _find_empty_rows(problem_input: list[str]) -> set[str]:
+    return {index for index, row in enumerate(problem_input) if "#" not in row}
+
+
+def _find_empty_columns(problem_input: list[str]) -> set[str]:
+    indexes = set()
+    for index, _ in enumerate(problem_input[0]):
+        column = [row[index] for row in problem_input]
+        if "#" not in column:
+            indexes.add(index)
+    return indexes
 
 
 def _parse_galaxies(expanded_input: list[str]) -> list[Galaxy]:
@@ -58,18 +61,11 @@ def _parse_galaxies(expanded_input: list[str]) -> list[Galaxy]:
     return galaxies
 
 
-def _sum_shortest_distances(galaxies: list[Galaxy]) -> int:
-    pairs_checked = set()
+def _sum_shortest_distances(
+    galaxies: list[Galaxy], empty_rows: set[str], empty_columns: set[str]
+) -> int:
     distance = 0
     for index, galaxy in enumerate(galaxies):
-        for other_index, other_galaxy in enumerate(galaxies):
-            pair = f"{min(index, other_index)}-{max(index, other_index)}"
-            if (index == other_index) or (pair in pairs_checked):
-                continue
-            distance += galaxy.distance(other_galaxy)
-            pairs_checked.add(pair)
+        for other_galaxy in galaxies[index:]:
+            distance += galaxy.distance(other_galaxy, empty_rows, empty_columns)
     return distance
-
-
-def main_part_two(problem_input: list[str]):
-    return

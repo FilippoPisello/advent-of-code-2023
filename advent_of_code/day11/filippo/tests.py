@@ -1,62 +1,36 @@
 from advent_of_code.day11.filippo.solution import (
     Galaxy,
-    _calculate_expanded_input,
     _parse_galaxies,
     _sum_shortest_distances,
+    main_part_one,
 )
 
 
-def test_distance_between_two_galaxies_is_sum_of_the_dist_between_their_coordinates():
-    galaxy_1 = Galaxy(1, 1)
-    galaxy_2 = Galaxy(2, 2)
-    assert galaxy_1.distance(galaxy_2) == 2
+class TestDistanceCalculation:
+    @staticmethod
+    def test_with_no_empty_rows_or_columns_distance_is_coordinates_delta():
+        galaxy_1 = Galaxy(1, 1)
+        galaxy_2 = Galaxy(2, 3)
+        assert galaxy_1.distance(galaxy_2, {}, {}) == 3
+
+    @staticmethod
+    def test_with_empty_row_in_between_add_expansion_coefficient():
+        galaxy_1 = Galaxy(1, 1)
+        galaxy_2 = Galaxy(2, 3)
+        Galaxy.EXPANSION_COEFFICIENT = 1
+        assert galaxy_1.distance(galaxy_2, {2}, {}) == 4
 
 
-def test_distance_with_example():
-    galaxies = [
-        Galaxy(4, 0),
-        Galaxy(9, 1),
-        Galaxy(0, 2),
-        Galaxy(8, 5),
-        Galaxy(1, 6),
-        Galaxy(12, 7),
-        Galaxy(9, 10),
-        Galaxy(0, 11),
-        Galaxy(5, 11),
-    ]
-    assert _sum_shortest_distances(galaxies) == 374
-
-
-def test_parse_galaxies_with_example():
-    expanded_input = [
+def test_parse_galaxy_from_line():
+    lines = [
         "....#........",
         ".........#...",
-        "#............",
-        ".............",
-        ".............",
-        "........#....",
-        ".#...........",
-        "............#",
-        ".............",
-        ".............",
-        ".........#...",
-        "#....#.......",
     ]
-    assert _parse_galaxies(expanded_input) == [
-        Galaxy(4, 0),
-        Galaxy(9, 1),
-        Galaxy(0, 2),
-        Galaxy(8, 5),
-        Galaxy(1, 6),
-        Galaxy(12, 7),
-        Galaxy(9, 10),
-        Galaxy(0, 11),
-        Galaxy(5, 11),
-    ]
+    assert _parse_galaxies(lines) == [Galaxy(4, 0), Galaxy(9, 1)]
 
 
-def test_universe_expansion():
-    test_universe = [
+def test_example_part_one():
+    problem_input = [
         "...#......",
         ".......#..",
         "#.........",
@@ -68,19 +42,4 @@ def test_universe_expansion():
         ".......#..",
         "#...#.....",
     ]
-
-    expanded_input = _calculate_expanded_input(test_universe)
-    assert expanded_input == [
-        "....#........",
-        ".........#...",
-        "#............",
-        ".............",
-        ".............",
-        "........#....",
-        ".#...........",
-        "............#",
-        ".............",
-        ".............",
-        ".........#...",
-        "#....#.......",
-    ]
+    assert main_part_one(problem_input) == 374
