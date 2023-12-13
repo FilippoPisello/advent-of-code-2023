@@ -7,8 +7,8 @@ with open(file, 'r') as f:
     lines = f.readlines()
 
 cards=[]
-cards.append(lines[0])
 cards.append(lines[1])
+
 print(cards)
 
 # Affichez la liste de listes
