@@ -1,6 +1,7 @@
 [packages]
 pytest = "*"
 numpy = "*"
+tqdm = "*"
 
 [requires]
 python_version = "3.11"
