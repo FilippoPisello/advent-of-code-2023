@@ -6,7 +6,6 @@ def main(problem_input: list[str]):
     
     number_pattern = r'(\d+)'
     letter_pattern = r'[a-zA-Z]'
-    seeds_list = []
     map_dict = defaultdict(list)
     
     for line in problem_input:
@@ -15,7 +14,6 @@ def main(problem_input: list[str]):
             line_list = line.split(":")
             seeds = re.findall(number_pattern, line_list[1])
             seeds = [int(seed) for seed in seeds]
-            seeds_list.append(seeds)
             continue
             
         if line == "":
