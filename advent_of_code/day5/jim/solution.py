@@ -23,11 +23,12 @@ def main(problem_input: list[str]):
         
         if re.match(letter_pattern, line):
             line_key = line.rstrip(" map:")
-            map_dict[line_key] = 0
+            map_dict[line_key] = []
             continue
 
         if re.match(number_pattern, line):
             numbers = re.findall(number_pattern, line)
-            map_dict[(line_key)].append(int(numbers))
+            numbers = [int(number) for number in numbers]
+            map_dict[line_key].append(numbers)
     
-    return seeds, map_dict
+    return seeds, dict(map_dict)
