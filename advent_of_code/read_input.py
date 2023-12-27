@@ -10,4 +10,5 @@ def read_txt_input(day_number: int, user: str) -> list[str]:
     """
     input_file = ROOT / f"day{day_number}/{user}/input.txt"
     content = input_file.read_text()
-    return content.splitlines()
+    # return content.splitlines()
+    return content.split("\n\n")
